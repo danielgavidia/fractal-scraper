@@ -10,6 +10,11 @@ type Movie = {
 	description?: string;
 };
 
+function cleanUpTitleString(title: string): string {
+	const regex = /^\d+\.\s*/;
+	return title.replace(regex, "");
+}
+
 const getScrapedMovies = async (): Promise<Movie[]> => {
 	// Start a browser instance
 	const browser = await puppeteer.launch({
@@ -41,9 +46,10 @@ const getScrapedMovies = async (): Promise<Movie[]> => {
 		});
 		return moviesParsed;
 	});
+	console.log(movieData);
 
 	// Get movie description from individual movie pages
-	const moviesParsed: Movie[] = await Promise.all(
+	const movieDataParsed: Movie[] = await Promise.all(
 		movieData.slice(0, 10).map(async (movie) => {
 			// Navigate to movie page
 			if (movie.imdbLink === "") {
@@ -59,16 +65,21 @@ const getScrapedMovies = async (): Promise<Movie[]> => {
 			});
 			// console.log(description);
 			await moviePage.close();
-			return { ...movie, description: description ? description : "" };
+			return {
+				...movie,
+				title: cleanUpTitleString(movie.title),
+				description: description ? description : "",
+			};
 		})
 	);
+	console.log(movieDataParsed);
 
 	// Close browser and tab
 	await page.close();
 	await browser.close();
 
 	// Return data;
-	return moviesParsed;
+	return movieDataParsed;
 };
 
 export default getScrapedMovies;

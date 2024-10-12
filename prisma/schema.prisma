@@ -29,7 +29,7 @@ model Movie {
     updatedAt DateTime @updatedAt
 
     // fields
-    title       String
+    title       String  @unique
     description String
     favorite    Boolean
     imageUrl    String
