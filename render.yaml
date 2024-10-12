@@ -4,6 +4,6 @@ services:
       env: node
       plan: free
       schedule: "0 12 * * *"
-      command: npm run worker
+      command: "npm run worker"
       region: oregon
       buildCommand: "bun install"
