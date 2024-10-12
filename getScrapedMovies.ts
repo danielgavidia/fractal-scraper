@@ -5,12 +5,12 @@ const url = "https://www.imdb.com/chart/top/";
 
 type Movie = {
 	title: string;
-	img: string;
+	imageUrl: string;
 	imdbLink: string;
 	description?: string;
 };
 
-const moviesMain = async (): Promise<Movie[]> => {
+const getScrapedMovies = async (): Promise<Movie[]> => {
 	// Start a browser instance
 	const browser = await puppeteer.launch({
 		headless: true,
@@ -31,11 +31,11 @@ const moviesMain = async (): Promise<Movie[]> => {
 		const movies = Array.from(document.querySelectorAll(".ipc-metadata-list-summary-item"));
 		const moviesParsed = movies.map((movie) => {
 			const title = movie.querySelector(".ipc-title__text")?.textContent?.trim();
-			const img = movie.querySelector(".ipc-image")?.getAttribute("src");
+			const imageUrl = movie.querySelector(".ipc-image")?.getAttribute("src");
 			const imdbLink = movie.querySelector(".ipc-title-link-wrapper")?.getAttribute("href");
 			return {
 				title: title ? title : "",
-				img: img ? img : "",
+				imageUrl: imageUrl ? imageUrl : "",
 				imdbLink: imdbLink ? `https://www.imdb.com${imdbLink}` : "",
 			};
 		});
@@ -71,4 +71,4 @@ const moviesMain = async (): Promise<Movie[]> => {
 	return moviesParsed;
 };
 
-await moviesMain();
+export default getScrapedMovies;
