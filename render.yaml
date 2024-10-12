@@ -4,6 +4,6 @@ services:
       env: node
       plan: free
       schedule: "0 12 * * *"
-      command: bun run postToDB.ts
+      command: bun run scraper/postToDB.ts
       region: oregon
       buildCommand: "bun install"
