@@ -1,0 +1,9 @@
+services:
+    - type: cron
+      name: fractal-favorites-cron
+      env: node
+      plan: starter
+      schedule: "0 12 * * *"
+      command: "bun run scraper/postToDB.ts"
+      region: oregon
+      buildCommand: "bun install"
