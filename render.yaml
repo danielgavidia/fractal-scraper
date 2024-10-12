@@ -4,6 +4,6 @@ services:
       env: node
       plan: free
       schedule: "0 12 * * *"
-      command: "./worker.sh"
+      command: "worker.sh"
       region: oregon
       buildCommand: "bun install"
